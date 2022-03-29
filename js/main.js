@@ -130,7 +130,6 @@ function crearInputs() {
         const nuevoTexto = document.createTextNode(`Salario anual del familiar nº${numero}: `);
 
         nuevoInput.setAttribute("id", `salario${numero}`);
-        nuevoInput.setAttribute("type", "number");
         nuevoInput.setAttribute("class", "salario");
 
         nuevoLabel.setAttribute("for", `salario${numero}`);
