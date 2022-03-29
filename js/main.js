@@ -12,6 +12,16 @@ function validarCantidadIntegrantes(cantidadFamiliares) {
     }
 }
 
+function validarSalarioFamiliares(salarioFamiliares) {
+    if (salarioFamiliares.length === 0) {
+        return "El cuadro no debe estar vacio";
+    } else if (!/^[0-9]+$/.test(salarioFamiliares)) {
+        return "El cuadro solo puede contener numeros";
+    } else {
+        return "";
+    }
+}
+
 function borrarErrores(errores) {
     while (errores.firstChild) {
         errores.removeChild(errores.lastChild);
@@ -101,9 +111,6 @@ $formularioCantidad.onsubmit = validarPrimerFormulario;
 function crearInputs() {
     const cantidadFamiliares = Number(document.querySelector("#cantidad-integrantes-familia").value);
     const nuevoForm = document.createElement("form");
-    nuevoForm.onsubmit = function () {
-        return false;
-    };
     nuevoForm.setAttribute("id", "form-calculo-integrantes");
 
     for (i = 0; i < cantidadFamiliares; i++) {
@@ -144,30 +151,34 @@ function crearInputs() {
     nuevoForm.appendChild(nuevoDiv);
     $cuerpoPagina.appendChild(nuevoForm);
 
-    const $botonCalcular = document.querySelector("#boton-calcular-salario");
-
-    $botonCalcular.onclick = function () {
-        const salariosFamiliares = document.querySelectorAll(".salario");
-
-        const listaSalarios = [];
-
-        for (i = 0; i < salariosFamiliares.length; i++) {
-            if (salariosFamiliares[i].value === "") {
-            } else {
-                listaSalarios.push(Number(salariosFamiliares[i].value));
-            }
-        }
-
-        const salarioAnualPromedio = calcularPromedioSalarioAnual(listaSalarios);
-
-        document.querySelector("#mayor-salario-anual").innerHTML = `El salario anual mayor de la familia es de $${calcularSalarioMayor(listaSalarios)}.`;
-        document.querySelector("#menor-salario-anual").innerHTML = `El salario anual menor de la familia es de $${calcularSalarioMenor(listaSalarios)}.`;
-        document.querySelector("#salario-anual-promedio").innerHTML = `El salario anual promedio de la familia es de $${salarioAnualPromedio}.`;
-        document.querySelector("#salario-mensual-promedio").innerHTML = `El salario mensual promedio de la familia es de $${salarioAnualPromedio / 12}.`;
-    };
-
     const $botonReset = document.querySelector("#boton-reset");
     const $formCalculoIntegrantes = document.querySelector("#form-calculo-integrantes");
+
+    function validarSegundoFormulario(event) {
+        const salariosFamiliares = document.querySelectorAll(".salario");
+        const listaInputSalarios = [];
+        const error = {};
+
+        for (i = 0; i < salariosFamiliares.length; i++) {
+            listaInputSalarios.push(salariosFamiliares[i].value);
+        }
+
+        for (i = 0; i < listaInputSalarios.length; i++) {
+            let numero = i + 1;
+            error[`salario${numero}`] = validarSalarioFamiliares(listaInputSalarios[i]);
+        }
+
+        const salarioAnualPromedio = calcularPromedioSalarioAnual(listaInputSalarios);
+
+        document.querySelector("#mayor-salario-anual").innerHTML = `El salario anual mayor de la familia es de $${calcularSalarioMayor(listaInputSalarios)}.`;
+        document.querySelector("#menor-salario-anual").innerHTML = `El salario anual menor de la familia es de $${calcularSalarioMenor(listaInputSalarios)}.`;
+        document.querySelector("#salario-anual-promedio").innerHTML = `El salario anual promedio de la familia es de $${salarioAnualPromedio}.`;
+        document.querySelector("#salario-mensual-promedio").innerHTML = `El salario mensual promedio de la familia es de $${salarioAnualPromedio / 12}.`;
+
+        event.preventDefault();
+    }
+
+    $formCalculoIntegrantes.onsubmit = validarSegundoFormulario;
 
     $botonReset.onclick = function () {
         $cuerpoPagina.removeChild($formCalculoIntegrantes);
