@@ -12,6 +12,12 @@ function validarCantidadIntegrantes(cantidadFamiliares) {
     }
 }
 
+function borrarErrores(errores) {
+    while (errores.firstChild) {
+        errores.removeChild(errores.lastChild);
+    }
+}
+
 function calcularSalarioMayor(salarios) {
     let salarioMayor = 0;
 
@@ -69,6 +75,8 @@ function validarPrimerFormulario(event) {
 function manejarErroresCantidad(errores) {
     const keys = Object.keys(errores);
     let cantidadErrores = 0;
+
+    borrarErrores($errores);
 
     keys.forEach(function (key) {
         const error = errores[key];
