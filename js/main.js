@@ -168,14 +168,58 @@ function crearInputs() {
             error[`salario${numero}`] = validarSalarioFamiliares(listaInputSalarios[i]);
         }
 
-        const salarioAnualPromedio = calcularPromedioSalarioAnual(listaInputSalarios);
+        const esExito = manejarErroresSalarios(error) === 0;
 
-        document.querySelector("#mayor-salario-anual").innerHTML = `El salario anual mayor de la familia es de $${calcularSalarioMayor(listaInputSalarios)}.`;
-        document.querySelector("#menor-salario-anual").innerHTML = `El salario anual menor de la familia es de $${calcularSalarioMenor(listaInputSalarios)}.`;
-        document.querySelector("#salario-anual-promedio").innerHTML = `El salario anual promedio de la familia es de $${salarioAnualPromedio}.`;
-        document.querySelector("#salario-mensual-promedio").innerHTML = `El salario mensual promedio de la familia es de $${salarioAnualPromedio / 12}.`;
+        if (esExito) {
+            const listaSalarios = [];
+
+            for (i = 0; i < listaInputSalarios.length; i++) {
+                listaSalarios.push(Number(listaInputSalarios[i]));
+            }
+
+            document.querySelector("#errores").className = "oculto";
+            borrarErrores($errores);
+
+            let salarioMayor = calcularSalarioMayor(listaSalarios);
+            let salarioMenor = calcularSalarioMenor(listaSalarios);
+            let salarioAnualPromedio = calcularPromedioSalarioAnual(listaSalarios);
+
+            document.querySelector("#mayor-salario-anual").innerHTML = `El salario anual mayor de la familia es de $${salarioMayor}.`;
+            document.querySelector("#menor-salario-anual").innerHTML = `El salario anual menor de la familia es de $${salarioMenor}.`;
+            document.querySelector("#salario-anual-promedio").innerHTML = `El salario anual promedio de la familia es de $${salarioAnualPromedio}.`;
+            document.querySelector("#salario-mensual-promedio").innerHTML = `El salario mensual promedio de la familia es de $${salarioAnualPromedio / 12}.`;
+
+            document.querySelector("#resultados").className = "resultados";
+        }
 
         event.preventDefault();
+    }
+
+    function manejarErroresSalarios(errores) {
+        const keys = Object.keys(errores);
+        let cantidadErrores = 0;
+        let numeroCuadro = 1;
+
+        borrarErrores($errores);
+
+        keys.forEach(function (key) {
+            const error = errores[key];
+
+            if (error) {
+                $formCalculoIntegrantes[key].className = "salario error";
+                const $error = document.createElement("li");
+                $error.innerText = `Cuadro nº${numeroCuadro}: ${error}`;
+                $errores.appendChild($error);
+                $errores.className = "";
+                cantidadErrores++;
+                numeroCuadro++;
+            } else {
+                $formCalculoIntegrantes[key].className = "salario";
+                numeroCuadro++;
+            }
+        });
+
+        return cantidadErrores;
     }
 
     $formCalculoIntegrantes.onsubmit = validarSegundoFormulario;
