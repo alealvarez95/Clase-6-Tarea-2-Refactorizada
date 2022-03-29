@@ -11,6 +11,16 @@ function probarValidarCantidadIntegrantes() {
 
 probarValidarCantidadIntegrantes();
 
+function probarValidarSalarioFamiliares() {
+    console.assert(validarSalarioFamiliares("") === "El cuadro no debe estar vacio", "Validar salario familiares no validó que los cuadros no esten vacíos");
+
+    console.assert(validarSalarioFamiliares("asd") === "El cuadro solo puede contener numeros", "Validar salario familiares no validó que los cuadros contengan solo numeros");
+
+    console.assert(validarSalarioFamiliares("1") === "", "Validar salario familiares fallo con un valor correcto");
+}
+
+probarValidarSalarioFamiliares();
+
 const SALARIOS = [5, 10, 15];
 
 function probarCalcularSalarioMayor(salarios) {
