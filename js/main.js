@@ -108,6 +108,14 @@ function manejarErroresCantidad(errores) {
 
 $formularioCantidad.onsubmit = validarPrimerFormulario;
 
+function reiniciarFormularioCantidad() {
+    $formularioCantidad.className = "";
+    document.querySelector("#resultados").className = "oculto";
+    document.querySelector("#errores").className = "oculto";
+    borrarErrores($errores);
+    document.querySelector("#cantidad-integrantes-familia").value = "";
+}
+
 function crearInputs() {
     const cantidadFamiliares = Number(document.querySelector("#cantidad-integrantes-familia").value);
     const nuevoForm = document.createElement("form");
@@ -224,12 +232,16 @@ function crearInputs() {
 
     $formCalculoIntegrantes.onsubmit = validarSegundoFormulario;
 
-    $botonReset.onclick = function () {
+    $botonReset.onclick = function (event) {
         $cuerpoPagina.removeChild($formCalculoIntegrantes);
+
+        reiniciarFormularioCantidad();
 
         document.querySelector("#mayor-salario-anual").innerHTML = ``;
         document.querySelector("#menor-salario-anual").innerHTML = ``;
         document.querySelector("#salario-anual-promedio").innerHTML = ``;
         document.querySelector("#salario-mensual-promedio").innerHTML = ``;
+
+        event.preventDefault();
     };
 }
