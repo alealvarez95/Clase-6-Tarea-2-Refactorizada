@@ -1,3 +1,4 @@
+const $formularioCantidad = document["formulario-cantidad-integrantes"];
 const $botonIntegrantesFamilia = document.querySelector("#boton-integrantes");
 const $cuerpoPagina = document.querySelector("body");
 
@@ -44,6 +45,20 @@ function calcularPromedioSalarioAnual(salarios) {
 
     return salariosTotales / salarios.length;
 }
+
+function validarPrimerFormulario(event) {
+    const cantidadFamiliares = document.querySelector("#cantidad-integrantes-familia").value;
+
+    const validacionCantidadFamiliares = validarCantidadIntegrantes(cantidadFamiliares);
+
+    const error = {
+        "cantidad-integrantes-familia": validacionCantidadFamiliares,
+    };
+
+    event.preventDefault();
+}
+
+$formularioCantidad.onsubmit = validarPrimerFormulario;
 
 $botonIntegrantesFamilia.onclick = function () {
     const cantidadFamiliares = Number(document.querySelector("#cantidad-integrantes-familia").value);
