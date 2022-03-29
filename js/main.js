@@ -1,6 +1,6 @@
 const $formularioCantidad = document["formulario-cantidad-integrantes"];
-const $botonIntegrantesFamilia = document.querySelector("#boton-integrantes");
 const $cuerpoPagina = document.querySelector("body");
+const $errores = document.querySelector("#errores");
 
 function validarCantidadIntegrantes(cantidadFamiliares) {
     if (cantidadFamiliares.length === 0) {
@@ -55,12 +55,42 @@ function validarPrimerFormulario(event) {
         "cantidad-integrantes-familia": validacionCantidadFamiliares,
     };
 
+    const esExito = manejarErroresCantidad(error) === 0;
+
+    if (esExito) {
+        $formularioCantidad.className = "oculto";
+        document.querySelector("#errores").className = "oculto";
+        crearInputs();
+    }
+
     event.preventDefault();
+}
+
+function manejarErroresCantidad(errores) {
+    const keys = Object.keys(errores);
+    let cantidadErrores = 0;
+
+    keys.forEach(function (key) {
+        const error = errores[key];
+
+        if (error) {
+            $formularioCantidad[key].className = "error";
+            const $error = document.createElement("li");
+            $error.innerText = error;
+            $errores.appendChild($error);
+            $errores.className = "";
+            cantidadErrores++;
+        } else {
+            $formularioCantidad[key].className = "";
+        }
+    });
+
+    return cantidadErrores;
 }
 
 $formularioCantidad.onsubmit = validarPrimerFormulario;
 
-$botonIntegrantesFamilia.onclick = function () {
+function crearInputs() {
     const cantidadFamiliares = Number(document.querySelector("#cantidad-integrantes-familia").value);
     const nuevoForm = document.createElement("form");
     nuevoForm.onsubmit = function () {
@@ -139,4 +169,4 @@ $botonIntegrantesFamilia.onclick = function () {
         document.querySelector("#salario-anual-promedio").innerHTML = ``;
         document.querySelector("#salario-mensual-promedio").innerHTML = ``;
     };
-};
+}
