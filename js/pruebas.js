@@ -10,3 +10,11 @@ function probarValidarCantidadIntegrantes() {
 }
 
 probarValidarCantidadIntegrantes();
+
+const SALARIOS = [5, 10, 15];
+
+function probarCalcularSalarioMayor(salarios) {
+    console.assert(calcularSalarioMayor(salarios) === 15, "Calcular salario mayor fallo al encontrar el salario mas alto");
+}
+
+probarCalcularSalarioMayor(SALARIOS);
