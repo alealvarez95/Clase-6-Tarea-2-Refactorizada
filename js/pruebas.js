@@ -18,3 +18,9 @@ function probarCalcularSalarioMayor(salarios) {
 }
 
 probarCalcularSalarioMayor(SALARIOS);
+
+function probarCalcularSalarioMenor(salarios) {
+    console.assert(calcularSalarioMenor(salarios) === 5, "Calcular salario menor fallo al encontrar el salario mas bajo");
+}
+
+probarCalcularSalarioMenor(SALARIOS);
