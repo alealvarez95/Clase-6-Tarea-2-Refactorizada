@@ -24,3 +24,9 @@ function probarCalcularSalarioMenor(salarios) {
 }
 
 probarCalcularSalarioMenor(SALARIOS);
+
+function probarCalcularPromedioSalarioAnual(salarios) {
+    console.assert(calcularPromedioSalarioAnual(salarios) === 10, "Calcular promedio salario anual fallo al encontrar el promedio anual de los salarios");
+}
+
+probarCalcularPromedioSalarioAnual(SALARIOS);
